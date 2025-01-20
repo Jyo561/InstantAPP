@@ -33,11 +33,17 @@ jobs:
       - name: Set up Android SDK
         run: | 
         echo "Installing Android SDK..."
+        
         brew install --cask android-sdk
+        
         export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+        
         export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+        
         export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+        
         export PATH=$ANDROID_SDK_ROOT/extras/google/instantapps:$PATH
+        
         echo "SDK setup complete"
 
       - name: Grant execute permission to Gradle
@@ -63,6 +69,7 @@ jobs:
           adb shell am start -n com.articleapp/com.articleapp.MainActivity
         env:
           ANDROID_SDK_ROOT: $HOME/Library/Android/sdk
+          
           PATH: $PATH:$HOME/Library/Android/sdk/emulator:$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk/extras/google/instantapps:$PATH
 
       - name: Upload APK as an artifact
