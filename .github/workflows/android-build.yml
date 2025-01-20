@@ -1,0 +1,41 @@
+name: Android Instant App Build
+
+on:
+  push:
+    branches:
+      - main  # Change this if you want builds on another branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use GitHub's Linux runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Use Temurin (AdoptOpenJDK)
+          java-version: '17'       # Make sure to match your Gradle version
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x android/gradlew
+
+      - name: Build the Instant App
+        run: |
+          cd android
+          ./gradlew :appInstant:assembleDebug
+
+      - name: Upload APK as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: instant-app-debug-apk
+          path: android/appInstant/build/outputs/apk/debug/appInstant-debug.apk
+
