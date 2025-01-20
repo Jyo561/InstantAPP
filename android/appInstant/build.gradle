@@ -45,7 +45,7 @@ android {
     }
 
     kotlinOptions {
-        languageVersion = '1.9.24'
+        languageVersion = '1.9'
         jvmTarget = "17" // Explicitly set JVM target version
     }
 
