@@ -4,7 +4,7 @@ buildscript {
     ext {
         buildToolsVersion = findProperty('android.buildToolsVersion') ?: '35.0.0'
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '24')
-        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '35')
+        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34') // Use 34 for better compatibility
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
         kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.24'
 
@@ -15,9 +15,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle')
+        classpath('com.android.tools.build:gradle:8.1.3') // Added version
         classpath('com.facebook.react:react-native-gradle-plugin')
-        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24')
     }
 }
 
@@ -26,16 +26,22 @@ apply plugin: "com.facebook.react.rootproject"
 allprojects {
     repositories {
         maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
+            url("$rootDir/../node_modules/react-native/android")
         }
         maven {
-            // Android JSC is installed from npm
-            url(new File(['node', '--print', "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim(), '../dist'))
+            url("$rootDir/../node_modules/jsc-android/dist")
         }
-
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
+    }
+}
+
+// Ensure Java & Kotlin compatibility
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17" // Set to match Java version
+        }
     }
 }
