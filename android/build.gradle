@@ -41,16 +41,12 @@ allprojects {
 
 // Fix Kotlin compatibility issue
 subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty("kotlin")) {
-            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-                kotlinOptions {
-                    jvmTarget = "17" // Match Java version
-                }
-            }
+    // Fix Kotlin compatibility issue directly within subprojects, avoiding `afterEvaluate`
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17" // Ensure compatibility with Java 17
         }
     }
 }
-
 
 
