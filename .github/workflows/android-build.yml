@@ -35,10 +35,14 @@ jobs:
 
       - name: Grant execute permission to Gradle
         run: chmod +x android/gradlew
+      
+      - name: Clean Gradle build
+        run: | 
+          cd android
+          ./gradlew clean
 
       - name: Build the Instant App
         run: |
-          cd android
           ./gradlew :appInstant:assembleDebug
 
       - name: Upload APK as an artifact
