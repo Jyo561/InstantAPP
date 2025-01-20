@@ -43,7 +43,29 @@ jobs:
 
       - name: Build the Instant App
         run: |
-          ./gradlew :appInstant:assembleDebug
+          cd android
+          set -e
+
+        # Uninstall app if already installed
+          adb uninstall com.articleapp || true
+
+        # Run cleanup script
+          sh scripts/cleanup.bash
+
+        # Clean the Gradle build
+          ./gradlew clean
+
+        # Build the appInstant release bundle
+          ./gradlew appInstant:bundleRelease
+
+        # Use bundletool to build APKs
+          bundletool build-apks --bundle=appInstant/build/outputs/bundle/release/appInstant-release.aab  --output=local_app.apks --connected-device --ks=debug.keystore --ks-pass=pass:12345678 --ks-key-alias=key0 --key-pass=pass:12345678
+
+        # Install APKs using bundletool
+          bundletool install-apks --apks local_app.apks
+
+        # Launch the app on the device
+          adb shell am start -n com.articleapp/com.articleapp.MainActivity
 
       - name: Upload APK as an artifact
         uses: actions/upload-artifact@v3
