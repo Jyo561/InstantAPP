@@ -31,7 +31,7 @@ jobs:
           java-version: '17'       # Make sure to match your Gradle version
 
       - name: Set up Android SDK
-        run: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v3
 
       - name: Grant execute permission to Gradle
         run: chmod +x android/gradlew
