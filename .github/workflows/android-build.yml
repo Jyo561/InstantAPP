@@ -3,10 +3,10 @@ name: Android Instant App Build
 on:
   push:
     branches:
-      - main  # Change this if you want builds on another branch
+      - master  # Change this if you want builds on another branch
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
