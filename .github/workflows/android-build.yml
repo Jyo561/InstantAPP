@@ -32,19 +32,19 @@ jobs:
 
       - name: Set up Android SDK
         run: | 
-        echo "Installing Android SDK..."
+          echo "Installing Android SDK..."
         
-        brew install --cask android-sdk
+          brew install --cask android-sdk
         
-        export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+          export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
         
-        export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+          export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
         
-        export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+          export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
         
-        export PATH=$ANDROID_SDK_ROOT/extras/google/instantapps:$PATH
+          export PATH=$ANDROID_SDK_ROOT/extras/google/instantapps:$PATH
         
-        echo "SDK setup complete"
+          echo "SDK setup complete"
 
       - name: Grant execute permission to Gradle
         run: chmod +x android/gradlew
