@@ -1,13 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     ext {
-        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '35.0.0'
-        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '24')
-        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34') // Use 34 for better compatibility
-        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
-        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.24'
-
+        buildToolsVersion = '35.0.0'
+        minSdkVersion = 24
+        compileSdkVersion = 34  // Ensure it's explicitly set
+        targetSdkVersion = 34
+        kotlinVersion = '1.9.24'
         ndkVersion = "26.1.10909125"
     }
     repositories {
@@ -15,13 +16,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:8.1.3') // Added version
+        classpath('com.android.tools.build:gradle:8.1.3') // Define version explicitly
         classpath('com.facebook.react:react-native-gradle-plugin')
-        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24')
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24")
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
 
 allprojects {
     repositories {
@@ -37,11 +39,18 @@ allprojects {
     }
 }
 
-// Ensure Java & Kotlin compatibility
+// Fix Kotlin compatibility issue
 subprojects {
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            jvmTarget = "17" // Set to match Java version
+    afterEvaluate { project ->
+        if (project.hasProperty("kotlin")) {
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                kotlinOptions {
+                    jvmTarget = "17" // Match Java version
+                }
+            }
         }
     }
 }
+
+
+
