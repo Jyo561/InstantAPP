@@ -31,7 +31,14 @@ jobs:
           java-version: '17'       # Make sure to match your Gradle version
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        run: | 
+        echo "Installing Android SDK..."
+        brew install --cask android-sdk
+        export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+        export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+        export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+        export PATH=$ANDROID_SDK_ROOT/extras/google/instantapps:$PATH
+        echo "SDK setup complete"
 
       - name: Grant execute permission to Gradle
         run: chmod +x android/gradlew
@@ -39,9 +46,9 @@ jobs:
       - name: Build the Instant App
         run: |
           cd android
-          set -e
+          # set -e
 
-          adb uninstall com.articleapp || true
+          # adb uninstall com.articleapp || true
 
           sh scripts/cleanup.bash
 
@@ -54,6 +61,9 @@ jobs:
           bundletool install-apks --apks local_app.apks
 
           adb shell am start -n com.articleapp/com.articleapp.MainActivity
+        env:
+          ANDROID_SDK_ROOT: $HOME/Library/Android/sdk
+          PATH: $PATH:$HOME/Library/Android/sdk/emulator:$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk/extras/google/instantapps:$PATH
 
       - name: Upload APK as an artifact
         uses: actions/upload-artifact@v3
