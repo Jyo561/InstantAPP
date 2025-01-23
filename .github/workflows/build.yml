@@ -3,6 +3,8 @@ name: Android Build
 on:
   push:
     branches: [ TodoApp ]
+  pull_request:
+    branches: [ TodoApp ]
 
 jobs:
   build-android:
@@ -11,27 +13,27 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
 
-    - name: Cache npm dependencies
+    - name: Cache dependencies
       uses: actions/cache@v3
       with:
         path: |
           node_modules
           **/node_modules
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-npm-
+          android/.gradle
+          ~/.gradle
+        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Install dependencies
+    - name: Install npm dependencies
       run: npm install
 
-    - name: Set up JDK
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
@@ -40,19 +42,19 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
-    - name: Generate React Native Bundle
+    - name: Build React Native bundle
       run: |
         npx react-native bundle --platform android --dev false \
           --entry-file index.js \
           --bundle-output android/app/src/main/assets/index.android.bundle \
           --assets-dest android/app/src/main/res/
 
-    - name: Assemble Release APK
+    - name: Assemble Debug APK
       working-directory: ./android
-      run: ./gradlew assembleRelease
+      run: ./gradlew assembleDebug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v3
       with:
-        name: app-release
-        path: android/app/build/outputs/apk/release/app-release.apk
+        name: app-debug
+        path: android/app/build/outputs/apk/debug/app-debug.apk
