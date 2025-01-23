@@ -29,7 +29,7 @@ android {
 
 dependencies {
     // Base React Native module (must be a dynamic feature)
-    implementation project(':app')
+    //implementation project(':app')
 
     // Instant App dependencies
     implementation('com.google.android.gms:play-services-instantapps:18.0.1')
