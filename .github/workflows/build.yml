@@ -47,8 +47,9 @@ jobs:
       uses: android-actions/setup-android@v2
     
     - name: Clean project
+      working-directory: ./android
       run: ./gradlew clean --no-daemon
-
+    
     - name: Build React Native bundle
       run: |
         npx react-native bundle --platform android --dev false \
