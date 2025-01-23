@@ -84,7 +84,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        missingDimensionStrategy "react-native-camera", "general"
     }
     signingConfigs {
         debug {
@@ -94,11 +93,11 @@ android {
             keyPassword 'android'
         }
     }
-    //dynamicFeatures = [":app"]
+    dynamicFeatures = [":app"]
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            matchingFallbacks = ['debug', 'release']
+            matchingFallbacks = ['debug']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -109,7 +108,11 @@ android {
             matchingFallbacks = ['release']
         }
     }
-    
+    packagingOptions {
+        pickFirst "**/libjsc.so"
+        pickFirst "**/libreact_codegen*.so"
+        exclude "META-INF/**"
+    }
 }
 
 dependencies {
