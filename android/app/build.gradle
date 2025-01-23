@@ -109,19 +109,7 @@ android {
             matchingFallbacks = ['release']
         }
     }
-    flavorDimensions "default"
-    productFlavors {
-        main {
-            dimension "default"
-            matchingFallbacks = ['debug', 'release']
-        }
-    }
-
-    // Fix packaging conflicts
-    packagingOptions {
-        pickFirst "**/libreact_codegen*.so"
-        excludes += ["META-INF/proguard/androidx-annotations.pro"]
-    }
+    
 }
 
 dependencies {
