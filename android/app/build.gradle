@@ -84,6 +84,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy "react-native-camera", "general"
     }
     signingConfigs {
         debug {
@@ -93,10 +94,11 @@ android {
             keyPassword 'android'
         }
     }
-    dynamicFeatures = [":app"]
+    //dynamicFeatures = [":app"]
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -104,7 +106,21 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            matchingFallbacks = ['release']
         }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        main {
+            dimension "default"
+            matchingFallbacks = ['debug', 'release']
+        }
+    }
+
+    // Fix packaging conflicts
+    packagingOptions {
+        pickFirst "**/libreact_codegen*.so"
+        excludes += ["META-INF/proguard/androidx-annotations.pro"]
     }
 }
 
@@ -113,8 +129,8 @@ dependencies {
     //implementation(project(":app"))
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:hermes-android")
-    implementation("com.google.android.play:core:1.10.3")
-    implementation("com.facebook.react:react-native")
+    //implementation("com.google.android.play:core:1.10.3")
+    //implementation("com.facebook.react:react-native")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
