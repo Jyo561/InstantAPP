@@ -1,4 +1,4 @@
-apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'com.android.instantapp'
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
@@ -20,5 +20,5 @@ android {
 
 dependencies {
     implementation project(':base')
-    implementation("com.facebook.react:react-native")
+    implementation project(':app')
 }
