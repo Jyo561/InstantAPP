@@ -44,29 +44,13 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Install Java 8 for Android SDK
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y openjdk-8-jdk
-        echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> $GITHUB_ENV
-        echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
-
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
       with:
         build-tools-version: '35.0.0'
         ndk-version: '27.1.12297006'
         cmake-version: '3.22.1'
-    
-    - name: Install Instant Apps SDK
-      run: |
-        echo "Installing Instant Apps SDK..."
-        sudo update-java-alternatives --set java-1.8.0-openjdk-amd64
-        export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-        $ANDROID_HOME/tools/bin/sdkmanager "extras;google;instantapps"
-      env:
-        JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-    
+        
     - name: Clean project
       working-directory: ./android
       run: ./gradlew clean --no-daemon
