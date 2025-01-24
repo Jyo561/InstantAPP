@@ -1,6 +1,7 @@
 apply plugin: 'com.android.dynamic-feature'
 def enableProguardInReleaseBuilds = false
 android {
+    namespace "com.videoapp.app"
     compileSdk rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
