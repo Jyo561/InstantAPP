@@ -1,4 +1,4 @@
-<string name="asset_statements" translatable="false">
+<string name="app_name" translatable="false">
     [{
         \"relation\": [\"delegate_permission/common.handle_all_urls\"],
         \"target\": {
