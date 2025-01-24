@@ -65,9 +65,9 @@ jobs:
     - name: Build Instant App
       working-directory: ./android
       run: |
-        ./gradlew clean
-        ./gradlew :instantapp:assembleDebug
         ./gradlew :base:bundleDebug
+        bundletool build-apks --bundle=base/build/outputs/bundle/debug/base-debug.aab --output=base.apks
+        bundletool install-apks --apks=base.apks
 
     - name: Upload Instant App Artifacts
       uses: actions/upload-artifact@v4
