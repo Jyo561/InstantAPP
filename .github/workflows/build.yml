@@ -65,7 +65,7 @@ jobs:
     - name: Build Instant App
       working-directory: ./android
       run: |
-        ./gradlew :base:bundleDebug
+        ./gradlew :base:assembleDebug --stacktrace
         bundletool build-apks --bundle=base/build/outputs/bundle/debug/base-debug.aab --output=base.apks
         bundletool install-apks --apks=base.apks
 
