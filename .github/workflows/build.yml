@@ -47,10 +47,14 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
       with:
-        build-tools-version: '33.0.0'
-        ndk-version: '25.2.9519653'
+        build-tools-version: '35.0.0'
+        ndk-version: '27.1.12297006'
         cmake-version: '3.22.1'
-        
+    - name: Install Instant Apps SDK
+      run: |
+        echo "Installing Instant Apps SDK..."
+        yes | $ANDROID_HOME/tools/bin/sdkmanager "extras;google;instantapps"
+    
     - name: Clean project
       working-directory: ./android
       run: ./gradlew clean --no-daemon
